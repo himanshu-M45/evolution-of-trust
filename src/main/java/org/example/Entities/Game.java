@@ -1,5 +1,6 @@
 package org.example.Entities;
 
+import org.example.Enum.PlayerMove;
 import org.example.Exceptions.CannotInitialteGameWihoutPlayers;
 
 public class Game {
@@ -14,22 +15,13 @@ public class Game {
         this.player2 = player2;
     }
 
-    public void play() {
-        int player1Move = player1.getPlayerInput();
-        int player2Move = player2.getPlayerInput();
-
-        // update scores according to input
-        if (player1Move == 1 && player2Move == 1) { // both players cooperate
-            player1.updateScore(2);
-            player2.updateScore(2);
-        }
-        if (player1Move == 0 && player2Move == 1 ) { // player1 cheats, player2 cooperates
-            player1.updateScore(3);
-            player2.updateScore(-1);
-        }
-        if (player1Move == 1 && player2Move == 0) { // player1 cooperates, player2 cheats
-            player1.updateScore(-1);
-            player2.updateScore(3);
+    public void play(int rounds) {
+        for (int i = 0; i < rounds; i++) {
+            PlayerMove player1Move = player1.getPlayerInput();
+            PlayerMove player2Move = player2.getPlayerInput();
+            // update score of both players
+            player1.updateScore(player2Move);
+            player2.updateScore(player1Move);
         }
     }
 }
