@@ -17,11 +17,7 @@ public class Player {
     }
 
     private void invest() {
-        if (this.move == Move.CHEAT) {
-            this.score += 3;
-            return;
-        }
-        this.score += 2;
+        this.score += 3;
     }
 
     private void deduct() {
@@ -29,16 +25,12 @@ public class Player {
     }
 
     public void playWith(Player anotherPlayer) {
-        if (this.move == Move.COOPERATE && anotherPlayer.getMove() == Move.COOPERATE) { // if both players have cooperated
-            this.invest();
+        if (this.move == Move.COOPERATE) {
+            this.deduct();
             anotherPlayer.invest();
         }
-        if (this.move == Move.CHEAT && anotherPlayer.getMove() == Move.COOPERATE) { // if this player has cheated and another player has cooperated
+        if (anotherPlayer.getMove() == Move.COOPERATE) {
             this.invest();
-            anotherPlayer.deduct();
-        }
-        if (this.move == Move.COOPERATE && anotherPlayer.getMove() == Move.CHEAT) { // if this player has cooperated and another player has cheated
-            this.deduct();
             anotherPlayer.deduct();
         }
     }
