@@ -6,7 +6,8 @@ import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
 
 public class Player {
     private int score;
-    private final Move move;
+    private Move move;
+    private final PlayerType playerType;
 
     public Player(PlayerType playerType) {
         if (playerType == null) {
@@ -14,24 +15,39 @@ public class Player {
         }
         this.score = 0;
         this.move = playerType.getMove();
+        this.playerType = playerType;
     }
 
-    private void invest() {
+    private void profit() {
         this.score += 3;
     }
 
-    private void deduct() {
+    private void loss() {
         this.score--;
     }
 
     public void playWith(Player anotherPlayer) {
         if (this.move == Move.COOPERATE) {
-            this.deduct();
-            anotherPlayer.invest();
+            this.loss();
+            anotherPlayer.profit();
         }
         if (anotherPlayer.getMove() == Move.COOPERATE) {
-            this.invest();
-            anotherPlayer.deduct();
+            this.profit();
+            anotherPlayer.loss();
+        }
+
+        // update COPYCAT player's move
+        if (this.playerType == PlayerType.COPYCAT || anotherPlayer.playerType == PlayerType.COPYCAT) {
+            updateCopycatMove(anotherPlayer);
+        }
+    }
+
+    private void updateCopycatMove(Player anotherPlayer) {
+        if (this.playerType == PlayerType.COPYCAT) {
+            this.move = anotherPlayer.getMove();
+        }
+        if (anotherPlayer.playerType == PlayerType.COPYCAT) {
+            anotherPlayer.move = this.getMove();
         }
     }
 

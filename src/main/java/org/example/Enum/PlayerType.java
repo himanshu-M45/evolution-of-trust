@@ -5,9 +5,11 @@ import static org.example.Enum.Move.COOPERATE;
 
 public enum PlayerType {
     ALWAYS_COOPERATE(COOPERATE),
-    ALWAYS_CHEAT(CHEAT);
+    ALWAYS_CHEAT(CHEAT),
+    COPYCAT(CHEAT);
 
     private final Move move;
+
     PlayerType(Move move) {
         this.move = move;
     }

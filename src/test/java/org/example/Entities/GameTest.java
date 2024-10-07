@@ -58,7 +58,7 @@ class GameTest {
 
     @Test
     @Tag("playGame")
-    void TestPlay5RoundWithBothCheatPlayersAnd0Score() {
+    void TestBothPlayersCheatFor5Rounds() {
         Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
         Player secondPlayer = new Player(PlayerType.ALWAYS_CHEAT);
         Game game = new Game(firstPlayer, secondPlayer);
@@ -69,7 +69,7 @@ class GameTest {
 
     @Test
     @Tag("playGame")
-    void TestPlay5RoundWithBothCooperatePlayersAnd10Score() {
+    void TestBothPlayersCooperateFor5Rounds() {
         Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
         Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
         Game game = new Game(firstPlayer, secondPlayer);
@@ -80,12 +80,56 @@ class GameTest {
 
     @Test
     @Tag("playGame")
-    void TestPlay5RoundWithOneCheatPlayerAndOneCooperatePlayers() {
+    void TestFirstPlayerCheatAndSecondPlayerCooperatesFor5Rounds() {
         Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
         Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(15, firstPlayer.getScore());
         assertEquals(-5, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerCooperatesAndSecondPlayerCheatsFor5Rounds() {
+        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player secondPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(-5, firstPlayer.getScore());
+        assertEquals(15, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerAlwaysCooperatesAndSecondPlayerIsCopycat() {
+        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player secondPlayer = new Player(PlayerType.COPYCAT);
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(7, firstPlayer.getScore());
+        assertEquals(11, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerAlwaysCheatsAndSecondPlayerIsCopycat() {
+        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        Player secondPlayer = new Player(PlayerType.COPYCAT);
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(0, firstPlayer.getScore());
+        assertEquals(0, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerIsCopycatAndSecondPlayerAlwaysCooperates() {
+        Player firstPlayer = new Player(PlayerType.COPYCAT);
+        Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(7);
+        assertEquals(15, firstPlayer.getScore());
+        assertEquals(11, secondPlayer.getScore());
     }
 }
