@@ -1,6 +1,6 @@
 package org.example.Entities;
 
-import org.example.Enum.PlayerMove;
+import org.example.Enum.PlayerType;
 import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ class PlayerTest {
     @Test
     @Tag("playerInitialization")
     void TestPlayerInitialization() {
-        assertDoesNotThrow(() -> new Player(PlayerMove.ALWAYS_CHEAT));
+        assertDoesNotThrow(() -> new Player(PlayerType.ALWAYS_CHEAT));
     }
 
     @Test
@@ -23,21 +23,7 @@ class PlayerTest {
     @Test
     @Tag("playerInitialization")
     void TestPlayerScoreInitialization() {
-        Player player = new Player(PlayerMove.ALWAYS_CHEAT);
+        Player player = new Player(PlayerType.ALWAYS_CHEAT);
         assertEquals(0, player.getScore());
-    }
-
-    @Test
-    @Tag("strategyTest")
-    void TestPlayerMoveAccordingToAlwaysCooperateStrategy() {
-        Player player = new Player(PlayerMove.ALWAYS_COOPERATE);
-        assertEquals(PlayerMove.ALWAYS_COOPERATE, player.getPlayerInput());
-    }
-
-    @Test
-    @Tag("strategyTest")
-    void TestPlayerMoveAccordingToAlwaysCheatStrategy() {
-        Player player = new Player(PlayerMove.ALWAYS_CHEAT);
-        assertEquals(PlayerMove.ALWAYS_CHEAT, player.getPlayerInput());
     }
 }

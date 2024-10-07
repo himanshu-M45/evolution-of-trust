@@ -1,34 +1,50 @@
 package org.example.Entities;
 
-import org.example.Enum.PlayerMove;
+import org.example.Enum.Move;
+import org.example.Enum.PlayerType;
 import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
 
 public class Player {
     private int score;
-    private final PlayerMove playerMove;
+    private final Move move;
 
-    public Player(PlayerMove playerMove) {
-        if (playerMove == null) {
+    public Player(PlayerType playerType) {
+        if (playerType == null) {
             throw new CannotCreatePlayerWithoutStrategy("Strategy not set");
         }
         this.score = 0;
-        this.playerMove = playerMove;
+        this.move = playerType.getMove();
     }
 
-    public PlayerMove getPlayerInput() {
-        return playerMove;
-    }
-
-    public void updateScore(PlayerMove opponentMove) {
-        if (this.playerMove == PlayerMove.ALWAYS_COOPERATE && opponentMove == PlayerMove.ALWAYS_COOPERATE) { // if both player have cooperated
-            this.score += 2;
-        }
-        if (this.playerMove == PlayerMove.ALWAYS_CHEAT && opponentMove == PlayerMove.ALWAYS_COOPERATE) {
+    private void invest() {
+        if (this.move == Move.CHEAT) {
             this.score += 3;
+            return;
         }
-        if (this.playerMove == PlayerMove.ALWAYS_COOPERATE && opponentMove == PlayerMove.ALWAYS_CHEAT) {
-            this.score -= 1;
+        this.score += 2;
+    }
+
+    private void deduct() {
+        this.score--;
+    }
+
+    public void playWith(Player anotherPlayer) {
+        if (this.move == Move.COOPERATE && anotherPlayer.getMove() == Move.COOPERATE) { // if both players have cooperated
+            this.invest();
+            anotherPlayer.invest();
         }
+        if (this.move == Move.CHEAT && anotherPlayer.getMove() == Move.COOPERATE) { // if this player has cheated and another player has cooperated
+            this.invest();
+            anotherPlayer.deduct();
+        }
+        if (this.move == Move.COOPERATE && anotherPlayer.getMove() == Move.CHEAT) { // if this player has cooperated and another player has cheated
+            this.deduct();
+            anotherPlayer.deduct();
+        }
+    }
+
+    private Move getMove() {
+        return move;
     }
 
     public int getScore() {
