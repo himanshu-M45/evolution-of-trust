@@ -4,7 +4,7 @@ import org.example.Enum.Move;
 
 public class AlwaysCheat extends PlayerStrategy {
     @Override
-    public Move getMove() {
-        return Move.CHEAT;
+    public int getMove() {
+        return 0;
     }
 }

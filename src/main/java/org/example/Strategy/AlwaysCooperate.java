@@ -4,7 +4,7 @@ import org.example.Enum.Move;
 
 public class AlwaysCooperate extends PlayerStrategy {
     @Override
-    public Move getMove() {
-        return Move.COOPERATE;
+    public int getMove() {
+        return 1;
     }
 }
