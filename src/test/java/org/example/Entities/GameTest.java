@@ -1,7 +1,9 @@
 package org.example.Entities;
 
-import org.example.Enum.PlayerType;
 import org.example.Exceptions.CannotInitialteGameWihoutPlayers;
+import org.example.Strategy.AlwaysCheat;
+import org.example.Strategy.AlwaysCooperate;
+import org.example.Strategy.Copycat;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -11,23 +13,23 @@ class GameTest {
     @Test
     @Tag("gameInitialization")
     void TestGameInitialization() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        Player firstPlayer = new Player(new AlwaysCooperate());
+        Player secondPlayer = new Player(new AlwaysCheat());
         assertDoesNotThrow(() -> new Game(firstPlayer, secondPlayer));
     }
 
     @Test
     @Tag("gameInitialization")
     void TestGameInitializationWithNullPlayer() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player firstPlayer = new Player(new AlwaysCooperate());
         assertThrows(CannotInitialteGameWihoutPlayers.class, () -> new Game(firstPlayer, null));
     }
 
     @Test
     @Tag("playGame")
     void TestPlayGameWithBothCheatPlayers() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        Player firstPlayer = new Player(new AlwaysCheat());
+        Player secondPlayer = new Player(new AlwaysCheat());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(1);
         assertEquals(0, firstPlayer.getScore());
@@ -37,8 +39,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestPlayGameWithBothCooperatePlayers() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player firstPlayer = new Player(new AlwaysCooperate());
+        Player secondPlayer = new Player(new AlwaysCooperate());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(1);
         assertEquals(2, firstPlayer.getScore());
@@ -48,8 +50,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestPlayGameOneCheatPlayerAndOneCooperatePlayer() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player firstPlayer = new Player(new AlwaysCheat());
+        Player secondPlayer = new Player(new AlwaysCooperate());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(1);
         assertEquals(3, firstPlayer.getScore());
@@ -59,8 +61,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestBothPlayersCheatFor5Rounds() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        Player firstPlayer = new Player(new AlwaysCheat());
+        Player secondPlayer = new Player(new AlwaysCheat());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(0, firstPlayer.getScore());
@@ -70,8 +72,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestBothPlayersCooperateFor5Rounds() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player firstPlayer = new Player(new AlwaysCooperate());
+        Player secondPlayer = new Player(new AlwaysCooperate());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(10, firstPlayer.getScore());
@@ -81,8 +83,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestFirstPlayerCheatAndSecondPlayerCooperatesFor5Rounds() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player firstPlayer = new Player(new AlwaysCheat());
+        Player secondPlayer = new Player(new AlwaysCooperate());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(15, firstPlayer.getScore());
@@ -92,8 +94,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestFirstPlayerCooperatesAndSecondPlayerCheatsFor5Rounds() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        Player firstPlayer = new Player(new AlwaysCooperate());
+        Player secondPlayer = new Player(new AlwaysCheat());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(-5, firstPlayer.getScore());
@@ -103,8 +105,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestFirstPlayerAlwaysCooperatesAndSecondPlayerIsCopycat() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player secondPlayer = new Player(PlayerType.COPYCAT);
+        Player firstPlayer = new Player(new AlwaysCooperate());
+        Player secondPlayer = new Player(new Copycat());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(7, firstPlayer.getScore());
@@ -114,8 +116,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestFirstPlayerAlwaysCheatsAndSecondPlayerIsCopycat() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        Player secondPlayer = new Player(PlayerType.COPYCAT);
+        Player firstPlayer = new Player(new AlwaysCheat());
+        Player secondPlayer = new Player(new Copycat());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(5);
         assertEquals(0, firstPlayer.getScore());
@@ -125,8 +127,8 @@ class GameTest {
     @Test
     @Tag("playGame")
     void TestFirstPlayerIsCopycatAndSecondPlayerAlwaysCooperates() {
-        Player firstPlayer = new Player(PlayerType.COPYCAT);
-        Player secondPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player firstPlayer = new Player(new Copycat());
+        Player secondPlayer = new Player(new AlwaysCooperate());
         Game game = new Game(firstPlayer, secondPlayer);
         game.play(7);
         assertEquals(15, firstPlayer.getScore());

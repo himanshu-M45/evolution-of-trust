@@ -1,8 +1,8 @@
 package org.example.Entities;
 
 import org.example.Enum.Move;
-import org.example.Enum.PlayerType;
 import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
+import org.example.Strategy.PlayerType;
 
 public class Player {
     private int score;
@@ -37,18 +37,8 @@ public class Player {
         }
 
         // update COPYCAT player's move
-        if (this.playerType == PlayerType.COPYCAT || anotherPlayer.playerType == PlayerType.COPYCAT) {
-            updateMove(anotherPlayer);
-        }
-    }
-
-    private void updateMove(Player anotherPlayer) {
-        if (this.playerType == PlayerType.COPYCAT) {
-            this.playerType.setMove(anotherPlayer.nextMove());
-        }
-        if (anotherPlayer.playerType == PlayerType.COPYCAT) {
-            anotherPlayer.playerType.setMove(this.nextMove());
-        }
+        this.playerType.setMove(opponentMove);
+        anotherPlayer.playerType.setMove(myMove);
     }
 
     private Move nextMove() {
