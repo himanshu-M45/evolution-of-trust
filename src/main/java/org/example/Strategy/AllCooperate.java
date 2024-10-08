@@ -2,14 +2,14 @@ package org.example.Strategy;
 
 import org.example.Enum.Move;
 
-public class AllCooperate extends PlayerType {
+public class AllCooperate extends PlayerStrategy {
     @Override
-    public Move getMove() {
+    public Move nextMove() {
         return Move.COOPERATE;
     }
 
     @Override
-    public void setMove(Move move) {
+    public void processOpponentMove(Move move) {
         // No implementation needed
     }
 }

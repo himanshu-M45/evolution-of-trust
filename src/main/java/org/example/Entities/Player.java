@@ -2,18 +2,18 @@ package org.example.Entities;
 
 import org.example.Enum.Move;
 import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
-import org.example.Strategy.PlayerType;
+import org.example.Strategy.PlayerStrategy;
 
 public class Player {
     private int score;
-    private final PlayerType playerType;
+    private final PlayerStrategy playerStrategy;
 
-    public Player(PlayerType playerType) {
-        if (playerType == null) {
+    public Player(PlayerStrategy playerStrategy) {
+        if (playerStrategy == null) {
             throw new CannotCreatePlayerWithoutStrategy("Strategy not set");
         }
         this.score = 0;
-        this.playerType = playerType;
+        this.playerStrategy = playerStrategy;
     }
 
     private void profit() {
@@ -36,13 +36,13 @@ public class Player {
             anotherPlayer.loss();
         }
 
-        // update COPYCAT player's move
-        this.playerType.setMove(opponentMove);
-        anotherPlayer.playerType.setMove(myMove);
+        // update player's move
+        this.playerStrategy.processOpponentMove(opponentMove);
+        anotherPlayer.playerStrategy.processOpponentMove(myMove);
     }
 
     private Move nextMove() {
-        return playerType.getMove();
+        return playerStrategy.nextMove();
     }
 
     public int getScore() {

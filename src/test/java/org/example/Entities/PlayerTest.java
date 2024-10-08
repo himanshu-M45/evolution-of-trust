@@ -4,6 +4,7 @@ import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
 import org.example.Strategy.AllCheat;
 import org.example.Strategy.AllCooperate;
 import org.example.Strategy.Copycat;
+import org.example.Strategy.Detective;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -87,5 +88,63 @@ class PlayerTest {
         firstPlayer.playWith(secondPlayer);
         assertEquals(0, firstPlayer.getScore());
         assertEquals(0, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playWith")
+    void TestCooperatePlayerPlayWithDetectivePlayer() {
+        Player firstPlayer = new Player(new AllCooperate());
+        Player secondPlayer = new Player(new Detective());
+        firstPlayer.playWith(secondPlayer);
+        assertEquals(2, firstPlayer.getScore());
+        assertEquals(2, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playWith")
+    void TestDetectivePlayerPlayWithDetectivePlayer() {
+        Player firstPlayer = new Player(new Detective());
+        Player secondPlayer = new Player(new Detective());
+        firstPlayer.playWith(secondPlayer);
+        assertEquals(2, firstPlayer.getScore());
+        assertEquals(2, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playWith")
+    void TestDetectivePlayerPlayWithAlwaysCheatPlayer() {
+        Player firstPlayer = new Player(new Detective());
+        Player secondPlayer = new Player(new AllCheat());
+        firstPlayer.playWith(secondPlayer);
+        assertEquals(-1, firstPlayer.getScore());
+        assertEquals(3, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playWith")
+    void TestDetective() {
+        Player detective = new Player(new Detective());
+        Player allCheat = new Player(new AllCheat());
+        Player allCooperate = new Player(new AllCooperate());
+
+        detective.playWith(allCooperate);
+        detective.playWith(allCooperate);
+        detective.playWith(allCooperate);
+        detective.playWith(allCooperate);
+
+        assertEquals(5, allCooperate.getScore());
+        assertEquals(9, detective.getScore());
+
+        detective.playWith(allCheat);
+        assertEquals(9, detective.getScore());
+        assertEquals(0, allCheat.getScore()); // 5
+
+        detective.playWith(allCooperate);
+        assertEquals(12, detective.getScore());
+        assertEquals(4, allCooperate.getScore()); // 6
+
+        detective.playWith(allCooperate);
+        assertEquals(14, detective.getScore());
+        assertEquals(6, allCooperate.getScore()); // 7
     }
 }

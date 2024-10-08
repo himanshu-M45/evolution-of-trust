@@ -4,6 +4,7 @@ import org.example.Exceptions.CannotInitialteGameWihoutPlayers;
 import org.example.Strategy.AllCheat;
 import org.example.Strategy.AllCooperate;
 import org.example.Strategy.Copycat;
+import org.example.Strategy.Detective;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -133,5 +134,69 @@ class GameTest {
         game.play(7);
         assertEquals(15, firstPlayer.getScore());
         assertEquals(11, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerCooperatesAndSecondPlayerDetective() {
+        Player firstPlayer = new Player(new AllCooperate());
+        Player secondPlayer = new Player(new Detective());
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(4, firstPlayer.getScore());
+        assertEquals(12, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerDetectiveAndSecondPlayerDetective() {
+        Player firstPlayer = new Player(new Detective());
+        Player secondPlayer = new Player(new Detective());
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(8, firstPlayer.getScore());
+        assertEquals(8, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerDetectiveAndSecondPlayerAlwaysCooperates() {
+        Player firstPlayer = new Player(new Detective());
+        Player secondPlayer = new Player(new AllCooperate());
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(12, firstPlayer.getScore());
+        assertEquals(4, secondPlayer.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerDetectiveAndSecondPlayerAlwaysCheats() {
+        Player firstPlayer = new Player(new Detective());
+        Player secondPlayer = new Player(new AllCheat());
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(-3, firstPlayer.getScore());
+        assertEquals(9, secondPlayer.getScore());
+
+        Player allCooperate = new Player(new AllCooperate());
+        firstPlayer.playWith(allCooperate);
+        assertEquals(0, firstPlayer.getScore());
+        assertEquals(-1, allCooperate.getScore());
+
+        firstPlayer.playWith(allCooperate);
+        assertEquals(2, firstPlayer.getScore());
+        assertEquals(1, allCooperate.getScore());
+    }
+
+    @Test
+    @Tag("playGame")
+    void TestFirstPlayerDetectiveAndSecondPlayerCopycat() {
+        Player firstPlayer = new Player(new Detective());
+        Player secondPlayer = new Player(new Copycat());
+        Game game = new Game(firstPlayer, secondPlayer);
+        game.play(5);
+        assertEquals(5, firstPlayer.getScore());
+        assertEquals(9, secondPlayer.getScore());
     }
 }
