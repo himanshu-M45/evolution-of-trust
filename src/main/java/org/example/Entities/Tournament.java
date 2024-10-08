@@ -21,10 +21,10 @@ public class Tournament {
 
     public void play() {
         while (!isAllPlayerTypeSame()) {
-            playAllPlayers();
-            eliminateBottomPlayers();
-            reproduceTopPlayers();
-            resetScores();
+            conductMatches(); // play all players against each other
+            eliminateBottomPlayers(); // eliminate the bottom players
+            reproduceTopPlayers(); // reproduce the top players
+            resetScores(); // reset all player score to 0
         }
     }
 
@@ -38,7 +38,7 @@ public class Tournament {
         return true;
     }
 
-    private void playAllPlayers() {
+    private void conductMatches() {
         for (int i = 0; i < players.size(); i++) {
             for (int j = 0; j < players.size(); j++) {
                 if (i != j) {
