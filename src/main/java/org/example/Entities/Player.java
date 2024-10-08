@@ -48,4 +48,12 @@ public class Player {
     public int getScore() {
         return score;
     }
+
+    public PlayerStrategy getStrategy() {
+        return playerStrategy;
+    }
+
+    public void resetScore() {
+        this.score = 0;
+    }
 }

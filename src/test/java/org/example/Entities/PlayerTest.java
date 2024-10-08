@@ -147,4 +147,24 @@ class PlayerTest {
         assertEquals(14, detective.getScore());
         assertEquals(6, allCooperate.getScore()); // 7
     }
+
+    @Test
+    @Tag("resetScore")
+    void testResetScore() {
+        Player firstPlayer = new Player(new AllCooperate());
+        Player secondPlayer = new Player(new AllCooperate());
+        firstPlayer.playWith(secondPlayer);
+
+        assertEquals(2, firstPlayer.getScore());
+        assertEquals(2, secondPlayer.getScore());
+        firstPlayer.resetScore();
+        assertEquals(0, firstPlayer.getScore());
+    }
+
+    @Test
+    @Tag("getStrategy")
+    void testGetStrategy() {
+        Player player = new Player(new AllCooperate());
+        assertEquals(AllCooperate.class, player.getStrategy().getClass());
+    }
 }
