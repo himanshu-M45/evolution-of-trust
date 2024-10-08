@@ -1,8 +1,8 @@
 package org.example.Entities;
 
 import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
-import org.example.Strategy.AlwaysCheat;
-import org.example.Strategy.AlwaysCooperate;
+import org.example.Strategy.AllCheat;
+import org.example.Strategy.AllCooperate;
 import org.example.Strategy.Copycat;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ class PlayerTest {
     @Test
     @Tag("playerInitialization")
     void TestPlayerInitialization() {
-        assertDoesNotThrow(() -> new Player(new AlwaysCheat()));
+        assertDoesNotThrow(() -> new Player(new AllCheat()));
     }
 
     @Test
@@ -25,15 +25,15 @@ class PlayerTest {
     @Test
     @Tag("playerInitialization")
     void TestPlayerScoreInitialization() {
-        Player player = new Player(new AlwaysCheat());
+        Player player = new Player(new AllCheat());
         assertEquals(0, player.getScore());
     }
 
     @Test
     @Tag("playWith")
     void TestAlwaysCheatPlayerPlayWithAlwaysCooperatePlayer() {
-        Player firstPlayer = new Player(new AlwaysCheat());
-        Player secondPlayer = new Player(new AlwaysCooperate());
+        Player firstPlayer = new Player(new AllCheat());
+        Player secondPlayer = new Player(new AllCooperate());
         firstPlayer.playWith(secondPlayer);
         assertEquals(3, firstPlayer.getScore());
         assertEquals(-1, secondPlayer.getScore());
@@ -42,8 +42,8 @@ class PlayerTest {
     @Test
     @Tag("playWith")
     void TestAlwaysCooperatePlayerPlayWithAlwaysCooperatePlayer() {
-        Player firstPlayer = new Player(new AlwaysCooperate());
-        Player secondPlayer = new Player(new AlwaysCooperate());
+        Player firstPlayer = new Player(new AllCooperate());
+        Player secondPlayer = new Player(new AllCooperate());
         firstPlayer.playWith(secondPlayer);
         assertEquals(2, firstPlayer.getScore());
         assertEquals(2, secondPlayer.getScore());
@@ -52,8 +52,8 @@ class PlayerTest {
     @Test
     @Tag("playWith")
     void TestAlwaysCheatPlayerPlayWithAlwaysCheatPlayer() {
-        Player firstPlayer = new Player(new AlwaysCheat());
-        Player secondPlayer = new Player(new AlwaysCheat());
+        Player firstPlayer = new Player(new AllCheat());
+        Player secondPlayer = new Player(new AllCheat());
         firstPlayer.playWith(secondPlayer);
         assertEquals(0, firstPlayer.getScore());
         assertEquals(0, secondPlayer.getScore());
@@ -63,7 +63,7 @@ class PlayerTest {
     @Tag("playWith")
     void TestCopycatPlayerPlayWithAlwaysCheatPlayer() {
         Player firstPlayer = new Player(new Copycat());
-        Player secondPlayer = new Player(new AlwaysCheat());
+        Player secondPlayer = new Player(new AllCheat());
         firstPlayer.playWith(secondPlayer);
         assertEquals(0, firstPlayer.getScore());
         assertEquals(0, secondPlayer.getScore());
@@ -73,7 +73,7 @@ class PlayerTest {
     @Tag("playWith")
     void TestCopycatPlayerPlayWithAlwaysCooperatePlayer() {
         Player firstPlayer = new Player(new Copycat());
-        Player secondPlayer = new Player(new AlwaysCooperate());
+        Player secondPlayer = new Player(new AllCooperate());
         firstPlayer.playWith(secondPlayer);
         assertEquals(3, firstPlayer.getScore());
         assertEquals(-1, secondPlayer.getScore());

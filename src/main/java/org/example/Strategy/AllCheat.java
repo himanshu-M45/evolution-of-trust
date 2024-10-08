@@ -2,10 +2,10 @@ package org.example.Strategy;
 
 import org.example.Enum.Move;
 
-public class AlwaysCooperate extends PlayerType {
+public class AllCheat extends PlayerType {
     @Override
     public Move getMove() {
-        return Move.COOPERATE;
+        return Move.CHEAT;
     }
 
     @Override
