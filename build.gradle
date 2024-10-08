@@ -16,6 +16,6 @@ dependencies {
 
 test {
     useJUnitPlatform {
-        includeTags 'gameInitialization', 'playGame', 'playerInitialization', 'strategyTest'
+        includeTags 'gameInitialization', 'playGame', 'playerInitialization', 'strategyTest', 'playWith'
     }
 }

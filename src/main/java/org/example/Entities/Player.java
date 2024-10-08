@@ -6,7 +6,6 @@ import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
 
 public class Player {
     private int score;
-    private Move move;
     private final PlayerType playerType;
 
     public Player(PlayerType playerType) {
@@ -14,7 +13,6 @@ public class Player {
             throw new CannotCreatePlayerWithoutStrategy("Strategy not set");
         }
         this.score = 0;
-        this.move = playerType.getMove();
         this.playerType = playerType;
     }
 
@@ -27,32 +25,34 @@ public class Player {
     }
 
     public void playWith(Player anotherPlayer) {
-        if (this.move == Move.COOPERATE) {
+        Move myMove = this.nextMove();
+        Move opponentMove = anotherPlayer.nextMove();
+        if (myMove == Move.COOPERATE) {
             this.loss();
             anotherPlayer.profit();
         }
-        if (anotherPlayer.getMove() == Move.COOPERATE) {
+        if (opponentMove == Move.COOPERATE) {
             this.profit();
             anotherPlayer.loss();
         }
 
         // update COPYCAT player's move
         if (this.playerType == PlayerType.COPYCAT || anotherPlayer.playerType == PlayerType.COPYCAT) {
-            updateCopycatMove(anotherPlayer);
+            updateMove(anotherPlayer);
         }
     }
 
-    private void updateCopycatMove(Player anotherPlayer) {
+    private void updateMove(Player anotherPlayer) {
         if (this.playerType == PlayerType.COPYCAT) {
-            this.move = anotherPlayer.getMove();
+            this.playerType.setMove(anotherPlayer.nextMove());
         }
         if (anotherPlayer.playerType == PlayerType.COPYCAT) {
-            anotherPlayer.move = this.getMove();
+            anotherPlayer.playerType.setMove(this.nextMove());
         }
     }
 
-    private Move getMove() {
-        return move;
+    private Move nextMove() {
+        return playerType.getMove();
     }
 
     public int getScore() {

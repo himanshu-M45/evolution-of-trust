@@ -2,14 +2,15 @@ package org.example.Strategy;
 
 import org.example.Enum.Move;
 
-public class AlwaysCooperate extends PlayerStrategy {
+public class Copycat extends PlayerStrategy {
+    private Move move = Move.CHEAT; // Start with CHEAT
     @Override
     public Move getMove() {
-        return Move.COOPERATE;
+        return move;
     }
 
     @Override
     public void setMove(Move move) {
-        // No implementation needed
+        this.move = move;
     }
 }

@@ -8,7 +8,7 @@ public enum PlayerType {
     ALWAYS_CHEAT(CHEAT),
     COPYCAT(CHEAT);
 
-    private final Move move;
+    private Move move;
 
     PlayerType(Move move) {
         this.move = move;
@@ -16,5 +16,9 @@ public enum PlayerType {
 
     public Move getMove() {
         return move;
+    }
+
+    public void setMove(Move move) {
+        this.move = move;
     }
 }

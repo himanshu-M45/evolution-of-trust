@@ -1,8 +1,15 @@
 package org.example.Strategy;
 
+import org.example.Enum.Move;
+
 public class AlwaysCheat extends PlayerStrategy {
     @Override
-    public int getMove() {
-        return 0;
+    public Move getMove() {
+        return Move.CHEAT;
+    }
+
+    @Override
+    public void setMove(Move move) {
+        // No implementation needed
     }
 }
