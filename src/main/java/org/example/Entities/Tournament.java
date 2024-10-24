@@ -1,22 +1,24 @@
 package org.example.Entities;
 
 import org.example.Exceptions.InvalidTournamentArgsException;
+import org.example.Strategy.PlayerStrategy;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class Tournament {
     private final List<Player> players;
     private final int rounds;
-    private final int numberOfUpdates;
+    private final int turnoverCount;
 
-    public Tournament(List<Player> players, int rounds, int numberOfUpdates) {
-        if (players.isEmpty() || rounds < 2 || numberOfUpdates < 2) {
+    public Tournament(List<Player> players, int rounds, int turnoverCount) {
+        if (players.isEmpty() || rounds < 2 || turnoverCount < 1) {
             throw new InvalidTournamentArgsException("Invalid input");
         }
         this.players = players;
         this.rounds = rounds;
-        this.numberOfUpdates = numberOfUpdates;
+        this.turnoverCount = turnoverCount;
     }
 
     public void play() {
@@ -24,7 +26,7 @@ public class Tournament {
             conductMatches(); // play all players against each other
             eliminateBottomPlayers(); // eliminate the bottom players
             reproduceTopPlayers(); // reproduce the top players
-            resetScores(); // reset all player score to 0
+            reinitializePlayers(); // reinitialize the players
         }
     }
 
@@ -55,21 +57,24 @@ public class Tournament {
         players.sort(Comparator.comparingInt(Player::getScore).reversed());
 
         // Remove the specified number of players from the end of the list
-        for (int i = 0; i < numberOfUpdates && !players.isEmpty(); i++) {
+        for (int i = 0; i < turnoverCount && !players.isEmpty(); i++) {
             players.removeLast();
         }
     }
 
     private void reproduceTopPlayers() {
-        for (int i = 0; i < numberOfUpdates; i++) {
+        for (int i = 0; i < turnoverCount; i++) {
             Player player = players.get(i);
             players.add(new Player(player.getStrategy()));
         }
     }
 
-    private void resetScores() {
+    private void reinitializePlayers() {
+        List<Player> clonedPlayers = new ArrayList<>();
         for (Player player : players) {
-            player.resetScore();
+            clonedPlayers.add(player.clone());
         }
+        players.clear();
+        players.addAll(clonedPlayers);
     }
 }

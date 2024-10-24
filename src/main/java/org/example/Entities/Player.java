@@ -4,9 +4,9 @@ import org.example.Enum.Move;
 import org.example.Exceptions.CannotCreatePlayerWithoutStrategy;
 import org.example.Strategy.PlayerStrategy;
 
-public class Player {
+public class Player implements Cloneable {
     private int score;
-    private final PlayerStrategy playerStrategy;
+    private PlayerStrategy playerStrategy;
 
     public Player(PlayerStrategy playerStrategy) {
         if (playerStrategy == null) {
@@ -53,7 +53,15 @@ public class Player {
         return playerStrategy;
     }
 
-    public void resetScore() {
-        this.score = 0;
+    @Override
+    public Player clone() {
+        try {
+            Player cloned = (Player) super.clone();
+            cloned.score = 0; // Reset the score
+            cloned.playerStrategy = this.playerStrategy.clone(); // Assuming PlayerStrategy has a clone method
+            return cloned;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }

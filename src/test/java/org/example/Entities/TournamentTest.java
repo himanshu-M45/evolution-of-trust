@@ -42,13 +42,13 @@ class TournamentTest {
     @Test
     @Tag("tournamentInitialization")
     void testTournamentInitializationWithInvalidRounds() {
-        assertThrows(InvalidTournamentArgsException.class, () -> new Tournament(players, 3, 2));
+        assertThrows(InvalidTournamentArgsException.class, () -> new Tournament(players, 1, 1));
     }
 
     @Test
     @Tag("tournamentInitialization")
     void testTournamentInitializationWithInvalidNumberOfUpdates() {
-        assertThrows(InvalidTournamentArgsException.class, () -> new Tournament(players, 4, 1));
+        assertThrows(InvalidTournamentArgsException.class, () -> new Tournament(players, 4, 0));
     }
 
     @Test
@@ -61,12 +61,16 @@ class TournamentTest {
 
     @Test
     @Tag("playTournament")
-    void testPlayTournamentWith5RoundsEach() {
-        List<Player> allCheatPlayers = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            allCheatPlayers.add(new Player(new AllCheat()));
-        }
-        Tournament tournament = new Tournament(allCheatPlayers, 5, 5);
+    void testPlayTournamentWith5RoundsEach5TurnoverCount() {
+        Tournament tournament = new Tournament(players, 5, 5);
+        tournament.play();
+        assertTrue(tournament.isAllPlayerTypeSame());
+    }
+
+    @Test
+    @Tag("playTournament")
+    void testPlay9PlayerTournamentWith7RoundsEach5TurnoverCount() {
+        Tournament tournament = new Tournament(players, 7, 5);
         tournament.play();
         assertTrue(tournament.isAllPlayerTypeSame());
     }
